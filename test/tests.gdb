@@ -38,8 +38,10 @@ checkResult
 
 test "PINA: 0x00, 0x00 => PORTB: 0x01"
 SetPINA 0x00
+expectPORTA 0x00
 continue 2
 SetPINA 0x00
+expectPORTA 0x00
 continue 2
 expectPORTB 0x01
 checkResult

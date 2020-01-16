@@ -28,7 +28,7 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
 
 unsigned char B = 0x01;         //B0 is initially on (LED)
 //unsigned char A0 = PINA; //reads input A0 (button)
-#define A0 (PINA & 0x01)
+//#define A0 (PINA & 0x01)
 
 enum States { Start, state1, state2} State;
 
@@ -38,7 +38,7 @@ void tickButton() {
 	    State = state1; // first state, PB0 is ON
 	    break;
 	case state1:
-	    if (A0) {      // if button pressed, go to state2
+	    if () {      // if button pressed, go to state2
 		State = state2;
 	    }	
 	    else {         // if no button pressed, stay at state1
@@ -46,7 +46,7 @@ void tickButton() {
 	    }
 	    break;
 	case state2:
-	    if (A0) {
+	    if () {
 		State = state1;
 	    } 
 	    else {
@@ -92,5 +92,6 @@ int main(void) {
     
     return 1;
 }
+
 
 
