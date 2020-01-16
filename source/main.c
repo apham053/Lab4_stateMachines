@@ -11,6 +11,7 @@
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  */
+
 #include <avr/io.h>
 #ifdef _SIMULATE_
 #include "simAVRHeader.h"
@@ -26,7 +27,7 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
 }
 
 unsigned char B = 0x01;         //B0 is initially on (LED)
-//unsigned char A0 = PINA & 0x01; //reads input A0 (button)
+//unsigned char A0 = PINA; //reads input A0 (button)
 #define A0 (PINA & 0x01)
 
 enum States { Start, state1, state2} State;
@@ -47,7 +48,7 @@ void tickButton() {
 	case state2:
 	    if (A0) {
 		State = state1;
-	    }
+	    } 
 	    else {
 		State = state2;
 	    }
@@ -59,7 +60,7 @@ void tickButton() {
     
     switch(State) {
 	case Start:
-	    B = 0x01;
+	    //B = 0x01;
 	    break;
 	case state1:
 	    B = SetBit(B, 0, 1);
@@ -74,8 +75,6 @@ void tickButton() {
 	    break;	    
     }    
 
-    PORTB = B;
-
 }
 
 int main(void) {
@@ -87,7 +86,11 @@ int main(void) {
 	
     while(1) {
 	tickButton();	
+	PORTB = B;
+        B = 0x01;
 	}
     
     return 1;
 }
+
+
