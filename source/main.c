@@ -16,6 +16,19 @@
 #include "simAVRHeader.h"
 #endif
 
+unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
+   return (b ?  (x | (0x01 << k))  :  (x & ~(0x01 << k)) );
+              //   Set bit to 1           Set bit to 0
+}
+
+unsigned char GetBit(unsigned char x, unsigned char k) {
+   return ((x & (0x01 << k)) != 0);
+}
+
+unsigned char B = 0x01;         //B0 is initially on (LED)
+//unsigned char A0 = PINA & 0x01; //reads input A0 (button)
+#define A0 (PINA & 0x01)
+
 enum States { Start, state1, state2} State;
 
 void tickButton() {
@@ -31,9 +44,39 @@ void tickButton() {
 		State = state1;
 	    }
 	    break;
+	case state2:
+	    if (A0) {
+		State = state1;
+	    }
+	    else {
+		State = state2;
+	    }
+	    break;
+	default:
+	    State = Start;
+	    break;
     }
-}
+    
+    switch(State) {
+	case Start:
+	    B = 0x01;
+	    break;
+	case state1:
+	    B = SetBit(B, 0, 1);
+	    B = SetBit(B, 1, 0);
+	    break;
+	case state2:
+	    B = SetBit(B, 0, 0);
+            B = SetBit(B, 1, 1);
+	    break;
+	default:
+	    B = 0x01;
+	    break;	    
+    }    
 
+    PORTB = B;
+
+}
 
 int main(void) {
 	DDRA = 0x00;
@@ -41,9 +84,6 @@ int main(void) {
 	PORTA = 0xFF;
 	PORTB = 0x00;
 	State = Start;   // initial call
-
-	unsigned char B = 0x01;         //B0 is initially on (LED)
-	unsigned char A0 = PINA & 0x01; //reads input A0 (button)
 	
     while(1) {
 	tickButton();	

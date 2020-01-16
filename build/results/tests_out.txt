@@ -1,10 +1,8 @@
-Breakpoint 1 at 0x126: file source/main.c, line 36.
+Breakpoint 1 at 0x208: file source/main.c, line 88.
 Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"PINA: 0x01, 0x00 => PORTB: 0x02"...
-	Expected 0x02 
-	PORTB '0x800025:	0x01
-======================================================
+"PINA: 0x01, 0x00 => PORTB: 0x02"...test/tests.gdb:30: Error in sourced command file:
+No symbol "state" in current context.
 Quitting: Remote doesn't know how to detach
