@@ -48,16 +48,14 @@ expectPORTB 0x01
 expect State state1
 checkResult
 
-test "PINA: 0x01, 0x01 => PORTB: 0x01"
+test "PINA: 0x01, 0x01 => PORTB: 0x02"
 set State = Start
 SetPINA 0x01
-#expectPORTB 0x02
-#expect State state2
 continue 2
 SetPINA 0x01
 continue 2
-expectPORTB 0x01
-expect State state1
+expectPORTB 0x02
+expect State state2
 checkResult
 
 test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01"
