@@ -1,15 +1,16 @@
 /*	Author: apham053
  *  Partner(s) Name: Steven Rodriguez
  *	Lab Section: 021
- *	Assignment: Lab #4  Exercise #3
+ *	Assignment: Lab #4  Exercise #1
  * 
- *	Exercise Description: 
- *  
+ *	Exercise Description: PB0 and PB1 each connect to an LED, and PB0's LED 
+ *  is initially on. Pressing a button connected to PA0 turns off PB0's LED 
+ *  and turns on PB1's LED, staying that way after button release. 
+ *  Pressing the button again turns off PB1's LED and turns on PB0's LED. 
  * 
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  */
-
 
 #include <avr/io.h>
 #ifdef _SIMULATE_
@@ -18,100 +19,40 @@
 
 unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
    return (b ?  (x | (0x01 << k))  :  (x & ~(0x01 << k)) );
-           
+              //   Set bit to 1           Set bit to 0
 }
 
 unsigned char GetBit(unsigned char x, unsigned char k) {
    return ((x & (0x01 << k)) != 0);
 }
 
-unsigned char B = 0x00;        
-#define A (PINA & 0x87)  
-int count = 0;
-enum States { Start, Init, poundPress, Release, yPress, xPress, Lock } State;
+unsigned char B = 0x01;         //B0 is initially on (LED)
+#define A0 (PINA & 0x01)        //reads input A0 (button)
+
+enum States { Start, state1, state2} State;
 
 void tickButton() {
     switch(State) {
-        case Start:
-	    B = 0x00;
-	    State = Init;
+	case Start:         
+	    State = state1; 
 	    break;
-	case Init:
-	    if (A == 0x04) {
-		State = poundPress; 
+	case state1:
+	    if (A0) {      
+		State = state2;
+	    }	
+	    else {         
+		State = state1;
 	    }
-	    else if(A == 0x80) {
-		State = Lock;
-	    }
+	    break;
+	case state2:
+	    if (A0) {
+		State = state1;
+	    } 
 	    else {
-		State = Init;
+		State = state2;
 	    }
 	    break;
-	case poundPress:
-	    if (A == 0x04) {
-		State = poundPress;
-	    }
-	    else if(A == 0x80) {
-                State = Lock;
-            }
-	    else if (A == 0x00) {
-		State = Release;
-	    }
-	    else {
-	        State = Init;
-	    }
-	    break;
-	case Release:
-	    if (A == 0x00) {
-		State = Release;
-	    }
-	    else if(A == 0x80) {
-                State = Lock;
-            }
-	    else if (A == 0x01) {
-		State = xPress;
-	    }
-            else if (A == 0x02) {
-                State = yPress;
-            }
-	    else if (A == 0x04) {
-		State = poundPress;
-	    }
-	    else {
-		State = Init;
-	    }
-	    break;
-	case yPress:
-	    count = count + 1;
-	    State = Lock;
-	    break;
-	case xPress:
-            if (A == 0x01) {
-                State = xPress;
-            }
-            else if (A == 0x80) {
-                State = Lock;
-            }
-            else if (A == 0x00) {
-                State = Release;
-            }
-            else {
-                State = Init;
-            }
-            break;
-	case Lock:
-		if (A == 0x02) {
-                if (B == 0x00) {
-                    B = 0x01;
-                }
-                B = 0x00;
-            }
-            else if (A == 0x80) {
-                B = 0x00;
-            }
-	    State = Lock;
-	    break;
-        default:
+	default:
 	    State = Start;
 	    break;
     }
@@ -119,26 +60,13 @@ void tickButton() {
     switch(State) {
 	case Start:
 	    break;
-	case Init:
+	case state1:
+	    B = SetBit(B, 0, 1);
+	    B = SetBit(B, 1, 0);
 	    break;
-	case poundPress:
-            break;
-	case Release:
-            break;
-	case yPress:
-	    break;
-	case Lock:
-	    if (A == 0x02) {
-		if (count == 1) {
-		    B = 0x01;
-		}
-                else {
-		    B = 0x00;
-		}
-	    }
-	    else if (A == 0x80) {
-		B = 0x00;
-	    }
+	case state2:
+	    B = SetBit(B, 0, 0);
+            B = SetBit(B, 1, 1);
 	    break;
 	default:
 	    break;	    
@@ -150,12 +78,14 @@ int main(void) {
 	DDRB = 0xFF;
 	PORTA = 0xFF;
 	PORTB = 0x00;
-	State = Start;  
+	State = Start;   // initial call
 	
 	while (1) {
 	tickButton();	
 	PORTB = B;
+        B = 0x01;
 	}
     
     return 1;
 }
+    

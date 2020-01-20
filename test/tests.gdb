@@ -26,36 +26,62 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "PINA: 0x04, 0x00, 0x02 => PORTB: 0x01, State: Lock"
-set State = Start
-setPINA 0x04
+test "PINA: 0x01, 0x00 => PORTB: 0x02, State state2"
+set State  = Start
+setPINA 0x01
 continue 2
 setPINA 0x00
 continue 2
-setPINA 0x02
-continue 2
-expectPORTB 0x01
-expect State Lock
+expectPORTB 0x02
+expect State state2
 checkResult
 
-test "PINA: 0x04, 0x00, 0x02, 0x00, 0x04, 0x00, 0x02 => PORTB: 0x00, State: Lock"
+test "PINA: 0x00, 0x00 => PORTB: 0x01, State: state1"
 set State = Start
-setPINA 0x04
+SetPINA 0x00
 continue 2
-setPINA 0x00
+SetPINA 0x00
 continue 2
-setPINA 0x02
+expectPORTB 0x01
+expect State state1
+checkResult
+
+test "PINA: 0x01, 0x01 => PORTB: 0x02, State: state2"
+set State = Start
+SetPINA 0x01
 continue 2
-setPINA 0x00
+SetPINA 0x01
 continue 2
-setPINA 0x04
+expectPORTB 0x02
+expect State state2
+checkResult
+
+test "PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, State: state1"
+set State = Start
+SetPINA 0x00
 continue 2
-setPINA 0x00
+SetPINA 0x01
 continue 2
-setPINA 0x02
+SetPINA 0x00
 continue 2
-expectPORTB 0x00
-expect State Lock
+SetPINA 0x01
+continue 2
+expectPORTB 0x01
+expect State state1
+checkResult
+
+test "PINA: 0x01, 0x01, 0x01, 0x00 => PORTB: 0x02, State: state2"
+set State = Start
+SetPINA 0x01
+continue 2
+SetPINA 0x01
+continue 2
+SetPINA 0x01
+continue 2
+SetPINA 0x00
+continue 2
+expectPORTB 0x02
+expect State state2
 checkResult
 
 # Report on how many tests passed/tests ran
