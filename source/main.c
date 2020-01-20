@@ -31,8 +31,8 @@ enum States { Start, Wait, Add, Sub, Reset} State;
 
 void tickButton() {
     switch(State) {
-        case Start:         
-	    State = Wait; 
+        case Start:        
+	    State = Wait; 	
 	    break;
 	case Wait: 
 	    if (A == 0x01) {
@@ -48,36 +48,30 @@ void tickButton() {
 		State = Wait;
 	    }
 	    break;
-	case Add: 
-	    if (A == 0x00) {     //release
+	case Add:
+	    if (A == 0x01) {
 		if (C == 0x09) {
 		    State = Wait;
 		}
 		else {
-		    ++C;
+		    C = C + 1;
 		    State = Wait;    
 	        }
 	    }
-	    else if (A == 0x03) {
-		State = Reset;
-	    }
 	    break;
 	case Sub:
-            if (A == 0x00) {     //release 
+	    if (A == 0x02) {
                 if (C == 0x00) {
                     State = Wait;
                 }
                 else {
-                    --C;
-		    State = Wait;    
+                    C = C - 1;
+		    State = Wait; 
                 }
-            }
-            else if (A == 0x03) {
-                State = Reset;
-            }
+	    }
             break;
 	case Reset:
-	    C = 0x00;
+	    C = 0x07;
 	    State = Wait;
 	    break;
         default:
@@ -111,9 +105,9 @@ int main(void) {
 	while (1) {
 	tickButton();	
 	PORTC = C;
-        C = 0x07;
 	}
     
     return 1;
 }
-    
+
+
