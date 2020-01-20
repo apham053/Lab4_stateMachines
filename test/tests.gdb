@@ -38,6 +38,16 @@ expectPORTB 0x01
 expect State Lock
 checkResult
 
+test "PINA: 0x04, PINA = 0x00 => PORTB: 0x00, State: Release"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect State Release
+checkResult
+
 test "PINA: 0x04 => PORTB: 0x00, State: poundPress"
 set State = Start
 setPINA 0x04
@@ -54,14 +64,28 @@ expectPORTB 0x00
 expect State Init
 checkResult
 
-test "PINA: 0x04, PINA = 0x00 => PORTB: 0x00, State: Release"
+test "PINA: 0x04, PINA = 0x02 => PORTB: 0x00, State: Init"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x02
+continue 2
+expectPORTB 0x00
+expect State Init
+checkResult
+
+test "PINA: 0x04, 0x00, 0x02, 0x80 => PORTB: 0x00, State: Lock"
 set State = Start
 setPINA 0x04
 continue 2
 setPINA 0x00
 continue 2
+setPINA 0x02
+continue 2
+setPINA 0x80
+continue 2
 expectPORTB 0x00
-expect State Release
+expect State Lock
 checkResult
 
 # Report on how many tests passed/tests ran
