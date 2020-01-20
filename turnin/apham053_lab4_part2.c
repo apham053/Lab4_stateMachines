@@ -99,7 +99,7 @@ int main(void) {
 	PORTC = 0x00;
 	State = Start;  
 	
-	//C = 0x07;
+	C = 0x07;
 	
 	while (1) {
 	tickButton();	
