@@ -32,7 +32,9 @@ enum States { Start, Wait, Add, Sub, Reset} State;
 
 void tickButton() {
     switch(State) {
-        case Start:        
+	//C = 0x07;
+        case Start:
+	    C = 0x07;        
 	    State = Wait; 	
 	    break;
 	case Wait: 

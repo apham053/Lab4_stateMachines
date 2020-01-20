@@ -36,10 +36,10 @@ expectPORTC 0x07
 expect State Reset
 checkResult
 
-test "PINA: 0x03, 0x01, 0x01 => PORTC: 0x09, State: Add"
+test "PINA: 0x01, 0x01 => PORTC: 0x09, State: Add"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x01
 continue 2
 setPINA 0x01
@@ -48,20 +48,20 @@ expectPORTC 0x09
 expect State Add
 checkResult
 
-test "PINA: 0x03, 0x01 => PORTC: 0x08, State: Add"
+test "PINA: 0x01 => PORTC: 0x08, State: Add"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x01
 continue 2
 expectPORTC 0x08
 expect State Add
 checkResult
 
-test "PINA: 0x03, 0x02, 0x02 => PORTC: 0x05, State: Sub"
+test "PINA: 0x02, 0x02 => PORTC: 0x05, State: Sub"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x02
 continue 2
 setPINA 0x02
@@ -70,20 +70,20 @@ expectPORTC 0x05
 expect State Sub
 checkResult
 
-test "PINA: 0x03, 0x02 => PORTC: 0x06, State: Sub"
+test "PINA: 0x02 => PORTC: 0x06, State: Sub"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x02
 continue 2
 expectPORTC 0x06
 expect State Sub
 checkResult
 
-test "PINA: 0x03, 0x01, 0x02, 0x01 => PORTC: 0x08, State: Add"
+test "PINA: 0x01, 0x02, 0x01 => PORTC: 0x08, State: Add"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x01
 continue 2
 setPINA 0x02
@@ -94,10 +94,10 @@ expectPORTC 0x08
 expect State Add
 checkResult
 
-test "PINA: 0x03, 0x02, 0x01, 0x02 => PORTC: 0x06, State: Sub"
+test "PINA: 0x02, 0x01, 0x02 => PORTC: 0x06, State: Sub"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x02
 continue 2
 setPINA 0x01
@@ -108,10 +108,10 @@ expectPORTC 0x06
 expect State Sub
 checkResult
 
-test "PINA: 0x03, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02 => PORTC: 0x00, State: Sub"
+test "PINA: 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02 => PORTC: 0x00, State: Sub"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x02
 continue 2
 setPINA 0x02
@@ -134,10 +134,10 @@ expectPORTC 0x00
 expect State Sub
 checkResult
 
-test "PINA: 0x03, 0x01, 0x01, 0x01, 0x01  => PORTC: 0x09, State: Add"
+test "PINA: 0x01, 0x01, 0x01, 0x01  => PORTC: 0x09, State: Add"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x01
 continue 2
 setPINA 0x01
@@ -150,10 +150,10 @@ expectPORTC 0x09
 expect State Add
 checkResult
 
-test "PINA: 0x03, 0x01, 0x01, 0x01, 0x01, 0x02, 0x03  => PORTC: 0x07, State: Reset"
+test "PINA: 0x01, 0x01, 0x01, 0x01, 0x02, 0x03  => PORTC: 0x07, State: Reset"
 set State = Start
-setPINA 0x03
-continue 2
+#setPINA 0x03
+#continue 2
 setPINA 0x01
 continue 2
 setPINA 0x01
