@@ -46,6 +46,124 @@ expectPORTB 0x01
 expect State Lock
 checkResult
 
+test "PINA: 0x04, 0x00, 0x01, 0x00, 0x02 => PORTB: 0x00, State: Lock"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+expectPORTB 0x00
+expect State yPress
+checkResult
+
+test "PINA: 0x04, 0x00, 0x01 => PORTB: 0x00, State: xPress"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+expectPORTB 0x00
+expect State xPress
+checkResult
+
+test "PINA: 0x04, PINA = 0x00 => PORTB: 0x00, State: Release"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+expectPORTB 0x00
+expect State Release
+checkResult
+
+test "PINA: 0x04, PINA = 0x01 => PORTB: 0x00, State: Init"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x01
+continue 2
+expectPORTB 0x00
+expect State Init
+checkResult
+
+test "PINA: 0x04 => PORTB: 0x00, State: poundPress"
+set State = Start
+setPINA 0x04
+continue 2
+expectPORTB 0x00
+expect State poundPress
+checkResult
+
+test "PINA: 0x02 => PORTB: 0x00, State: Init"
+set State = Start
+setPINA 0x02
+continue 2
+expectPORTB 0x00
+expect State Init
+checkResult
+
+test "PINA: 0x04, PINA = 0x02 => PORTB: 0x00, State: Init"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x02
+continue 2
+expectPORTB 0x00
+expect State Init
+checkResult
+
+test "PINA: 0x04, 0x00, 0x02, 0x80 => PORTB: 0x00, State: Lock"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x80
+continue 2
+expectPORTB 0x00
+expect State Lock
+checkResult
+
+test "PINA: 0x80 => PORTB: 0x00, State: Lock"
+set State = Start
+setPINA 0x80
+continue 2
+expectPORTB 0x00
+expect State Lock
+checkResult
+
+test "PINA: 0x04, 0x00, 0x01, 0x00, 0x02, 0x00, 0x01, 0x80 => PORTB: 0x00, State: Lock"
+set State = Start
+setPINA 0x04
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x02
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x80
+continue 2
+expectPORTB 0x00
+expect State Lock
+checkResult
+
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
