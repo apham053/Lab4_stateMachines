@@ -87,7 +87,7 @@ void tickButton() {
 	    }
             break;
 	case Reset:
-	    C = 0x07;
+	    C = 0x00;
             break;
 	default:
 	    break;	    
