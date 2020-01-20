@@ -28,6 +28,7 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
 unsigned char B = 0x00;        
 #define A (PINA & 0x87)  
 int count = 0;
+//int count2 = 0;
 
 enum States { Start, Init, poundPress, Release, yPress, xPress, Lock } State;
 
@@ -104,7 +105,7 @@ void tickButton() {
             if (A == 0x01) {
                 State = xPress;
             }
-            else if (A == 0x80 || count == 2) {
+            else if (A == 0x80 || count == 2 || count == 4) {
                 State = Lock;
             }
             else if (A == 0x00) {
@@ -135,9 +136,14 @@ void tickButton() {
 	    break;
 	case Lock:
 	    if (A == 0x01) {
-		B = 0x01;
+		if (count == 4){
+		    B = 0x00;
+		}
+		else { 
+		    B = 0x01;
+		}
 	    }
-	    else if (A == 0x80) {
+	     else if (A == 0x80) {
 		B = 0x00;
 	    }
 	    break;
