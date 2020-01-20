@@ -1,7 +1,7 @@
 /*	Author: apham053
  *  Partner(s) Name: Steven Rodriguez
  *	Lab Section: 021
- *	Assignment: Lab #4  Exercise #2
+ *	Assignment: Lab #4  Exercise #3
  * 
  *	Exercise Description: 
  *  
@@ -25,40 +25,45 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
    return ((x & (0x01 << k)) != 0);
 }
 
-unsigned char C = 0x07;        
-#define A (PINA & 0x03)  
+unsigned char B = 0x00;        
+#define A (PINA & 0x87)  
 
-enum States { Start, Wait, Add, Sub, Reset} State;
+enum States { Start, Init, poundPress, Release, yPress, Lock } State;
 
 void tickButton() {
     switch(State) {
-	//C = 0x07;
         case Start:
-	    C = 0x07;        
-	    State = Wait; 	
+	    B = 0x00;
+	    State = Init;
 	    break;
-	case Wait: 
-	    if (A == 0x01) {
-		State = Add; 
-	    }
-	    else if (A == 0x02) {
-		State = Sub;
-	    }
-	    else if (A == 0x03) {
-		State = Reset;
+	case Init:
+	    if (A == 0x04) {
+		State = poundPress; 
 	    }
 	    else {
-		State = Wait;
+		State = Init;
 	    }
 	    break;
-	case Add:   
-		State = Wait;
+	case poundPress:
+	    if (A == 0x00) {
+		State = Release;
+	    }
+	    else {
+	        State = Init;
+	    }
+	case Release:
+            if (A == 0x02) {
+                State = yPress;
+            }
+	    else {
+		State = Init;
+	    }
 	    break;
-	case Sub:
-		State = Wait;
-            break;
-	case Reset:
-	    State = Wait;
+	case yPress:
+	    State = Lock;
+	    break;
+	case Lock:
+	    State = Lock;
 	    break;
         default:
 	    State = Start;
@@ -68,27 +73,17 @@ void tickButton() {
     switch(State) {
 	case Start:
 	    break;
-	case Wait:
+	case Init:
 	    break;
-	case Add:
-	    if (C < 0x09) {
-                C = C + 1;
-            }
-	    else {
-                C = 0x09;
-            }
+	case poundPress:
             break;
-	case Sub:
-	    if (C > 0x00) {
-		C = C - 1;
-	    }
-	    else {
-		C = 0x00;
-	    }
+	case Release:
             break;
-	case Reset:
-	    C = 0x07;
-            break;
+	case yPress:
+	    break;
+	case Lock:
+	    B = 0x01;
+	    break;
 	default:
 	    break;	    
     }    
@@ -96,17 +91,14 @@ void tickButton() {
 
 int main(void) {
 	DDRA = 0x00;
-	DDRC = 0xFF;
+	DDRB = 0xFF;
 	PORTA = 0xFF;
-	PORTC = 0x00;
+	PORTB = 0x00;
 	State = Start;  
-	
-	//C = 0x07;
 	
 	while (1) {
 	tickButton();	
-	PORTC = C;
-	//C = 0x07;
+	PORTB = B;
 	}
     
     return 1;

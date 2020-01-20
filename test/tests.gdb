@@ -26,148 +26,16 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "PINA: 0x03, 0x03 => PORTC: 0x07, State: Reset"
+test "PINA: 0x04, 0x00, 0x02 => PORTB: 0x01, State: Lock"
 set State = Start
-setPINA 0x03
+setPINA 0x04
 continue 2
-setPINA 0x03
-continue 2
-expectPORTC 0x07
-expect State Reset
-checkResult
-
-test "PINA: 0x01, 0x01 => PORTC: 0x09, State: Add"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-expectPORTC 0x09
-expect State Add
-checkResult
-
-test "PINA: 0x01 => PORTC: 0x08, State: Add"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x01
-continue 2
-expectPORTC 0x08
-expect State Add
-checkResult
-
-test "PINA: 0x02, 0x02 => PORTC: 0x05, State: Sub"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x02
+setPINA 0x00
 continue 2
 setPINA 0x02
 continue 2
-expectPORTC 0x05
-expect State Sub
-checkResult
-
-test "PINA: 0x02 => PORTC: 0x06, State: Sub"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x02
-continue 2
-expectPORTC 0x06
-expect State Sub
-checkResult
-
-test "PINA: 0x01, 0x02, 0x01 => PORTC: 0x08, State: Add"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x01
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x01
-continue 2
-expectPORTC 0x08
-expect State Add
-checkResult
-
-test "PINA: 0x02, 0x01, 0x02 => PORTC: 0x06, State: Sub"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x02
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x02
-continue 2
-expectPORTC 0x06
-expect State Sub
-checkResult
-
-test "PINA: 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02 => PORTC: 0x00, State: Sub"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x02
-continue 2
-expectPORTC 0x00
-expect State Sub
-checkResult
-
-test "PINA: 0x01, 0x01, 0x01, 0x01  => PORTC: 0x09, State: Add"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-expectPORTC 0x09
-expect State Add
-checkResult
-
-test "PINA: 0x01, 0x01, 0x01, 0x01, 0x02, 0x03  => PORTC: 0x07, State: Reset"
-set State = Start
-#setPINA 0x03
-#continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x01
-continue 2
-setPINA 0x02
-continue 2
-setPINA 0x03
-continue 2
-expectPORTC 0x07
-expect State Reset
+expectPORTB 0x01
+expect State Lock
 checkResult
 
 # Report on how many tests passed/tests ran
