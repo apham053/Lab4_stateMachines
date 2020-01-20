@@ -51,6 +51,7 @@ void tickButton() {
 	    else {
 	        State = Init;
 	    }
+	    break;
 	case Release:
             if (A == 0x02) {
                 State = yPress;

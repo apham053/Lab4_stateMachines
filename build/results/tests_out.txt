@@ -1,4 +1,4 @@
-Breakpoint 1 at 0x21a: file source/main.c, line 99.
+Breakpoint 1 at 0x21c: file source/main.c, line 100.
 Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
@@ -7,5 +7,6 @@ Running all tests..."
 	Expected 0x01 
 	PORTB '0x800025:	0x00
 
-	Expected Lock but got State:1======================================================
+	Expected Lock but got State:1"PINA: 0x04 => PORTB: 0x00, State: poundPress"..."PINA: 0x02 => PORTB: 0x00, State: Init"..."PINA: 0x04, PINA = 0x00 => PORTB: 0x00, State: Release"...
+	Expected Release but got State:1======================================================
 Quitting: Remote doesn't know how to detach
