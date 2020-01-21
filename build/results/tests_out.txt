@@ -1,7 +1,24 @@
-Breakpoint 1 at 0x1f0: file source/main.c, line 83.
+Breakpoint 1 at 0x31e: file source/main.c, line 132.
 Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"PINA: 0x01, 0x00 => PORTB: 0x02, State state2"..."PINA: 0x00, 0x00 => PORTB: 0x01, State: state1"..."PINA: 0x01, 0x01 => PORTB: 0x02, State: state2"..."PINA: 0x00, 0x01, 0x00, 0x01 => PORTB: 0x01, State: state1"..."PINA: 0x01, 0x01, 0x01, 0x00 => PORTB: 0x02, State: state2"...======================================================
+"PINA: 0x03, 0x03 => PORTC: 0x00, State: Release"..."PINA: 0x01, 0x01 => PORTC: 0x08, State: Release"..."PINA: 0x01 => PORTC: 0x08, State: Add"..."PINA: 0x02, 0x02 => PORTC: 0x06, State: Release"..."PINA: 0x02 => PORTC: 0x06, State: Sub"..."PINA: 0x01, 0x02 => PORTC: 0x00, State: Reset"...
+	Expected 0x00 
+	PORTC '0x800028:	0x08
+
+	Expected Reset but got State:5"PINA: 0x02, 0x01, 0x02 => PORTC: 0x06, State: Sub"...
+	Expected Sub but got State:5"PINA: 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02, 0x02 => PORTC: 0x00, State: Sub"...
+	Expected 0x00 
+	PORTC '0x800028:	0x06
+
+	Expected Sub but got State:5"PINA: 0x01, 0x01, 0x01, 0x01  => PORTC: 0x09, State: Add"...
+	Expected 0x09 
+	PORTC '0x800028:	0x08
+
+	Expected Add but got State:5"PINA: 0x01, 0x01, 0x01, 0x01, 0x02, 0x03  => PORTC: 0x00, State: Reset"...
+	Expected 0x00 
+	PORTC '0x800028:	0x08
+
+	Expected Reset but got State:5======================================================
 Quitting: Remote doesn't know how to detach

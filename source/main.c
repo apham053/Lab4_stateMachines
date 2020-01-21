@@ -1,16 +1,15 @@
 /*	Author: apham053
  *  Partner(s) Name: Steven Rodriguez
  *	Lab Section: 021
- *	Assignment: Lab #4  Exercise #1
+ *	Assignment: Lab #4  Exercise #2
  * 
- *	Exercise Description: PB0 and PB1 each connect to an LED, and PB0's LED 
- *  is initially on. Pressing a button connected to PA0 turns off PB0's LED 
- *  and turns on PB1's LED, staying that way after button release. 
- *  Pressing the button again turns off PB1's LED and turns on PB0's LED. 
+ *	Exercise Description: 
+ *  
  * 
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  */
+
 
 #include <avr/io.h>
 #ifdef _SIMULATE_
@@ -19,40 +18,77 @@
 
 unsigned char SetBit(unsigned char x, unsigned char k, unsigned char b) {
    return (b ?  (x | (0x01 << k))  :  (x & ~(0x01 << k)) );
-              //   Set bit to 1           Set bit to 0
+           
 }
 
 unsigned char GetBit(unsigned char x, unsigned char k) {
    return ((x & (0x01 << k)) != 0);
 }
 
-unsigned char B = 0x01;         //B0 is initially on (LED)
-#define A0 (PINA & 0x01)        //reads input A0 (button)
+unsigned char C = 0x07;        
+#define A (PINA & 0x03)  
+int count = 0;
 
-enum States { Start, state1, state2} State;
+enum States { Start, Wait, Add, Sub, Reset, Release} State;
 
 void tickButton() {
     switch(State) {
-	case Start:         
-	    State = state1; 
+        case Start:
+	    C = 0x07;        
+	    State = Wait; 	
 	    break;
-	case state1:
-	    if (A0) {      
-		State = state2;
-	    }	
-	    else {         
-		State = state1;
+	case Wait: 
+	    if (A == 0x01) {
+		count = count + 1;
+		State = Add; 
 	    }
-	    break;
-	case state2:
-	    if (A0) {
-		State = state1;
-	    } 
+	    else if (A == 0x02) {
+		count = count + 2;
+		State = Sub;
+	    }
+	    else if (A == 0x03) {
+		State = Reset;
+	    }
 	    else {
-		State = state2;
+		State = Wait;
 	    }
 	    break;
-	default:
+	case Add:   
+	    State = Release;
+	    break;
+	case Sub:
+	    State = Release;
+            break;
+	case Reset:
+	    State = Release;
+	    break;
+	case Release:
+	    if (A == 0x01) {
+		count = count + 1;
+		if (count == 3) {
+		    State = Reset;
+		}
+		else {
+                    State = Release;
+		}
+            }
+            else if (A == 0x02) {
+		count = count + 2;
+                if (count == 3) {
+                    State = Reset;
+                }
+		else {
+		    State = Release;
+		}
+            }
+	    else if (A == 0x03) {
+		State = Release;
+	    }
+	    else if (A == 0x00) {
+                State = Wait;  
+	    }
+	    break;
+        default:
 	    State = Start;
 	    break;
     }
@@ -60,14 +96,27 @@ void tickButton() {
     switch(State) {
 	case Start:
 	    break;
-	case state1:
-	    B = SetBit(B, 0, 1);
-	    B = SetBit(B, 1, 0);
+	case Wait:
 	    break;
-	case state2:
-	    B = SetBit(B, 0, 0);
-            B = SetBit(B, 1, 1);
-	    break;
+	case Add:
+	    if (C < 0x09) {
+                C = C + 1;
+            }
+	    else {
+                C = 0x09;
+            }
+            break;
+	case Sub:
+	    if (C > 0x00) {
+		C = C - 1;
+	    }
+	    else {
+		C = 0x00;
+	    }
+            break;
+	case Reset:
+	    C = 0x00;
+            break;
 	default:
 	    break;	    
     }    
@@ -75,17 +124,15 @@ void tickButton() {
 
 int main(void) {
 	DDRA = 0x00;
-	DDRB = 0xFF;
+	DDRC = 0xFF;
 	PORTA = 0xFF;
-	PORTB = 0x00;
-	State = Start;   // initial call
+	PORTC = 0x00;
+	State = Start;  
 	
 	while (1) {
 	tickButton();	
-	PORTB = B;
-        B = 0x01;
+	PORTC = C;
 	}
     
     return 1;
 }
-    
