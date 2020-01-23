@@ -27,21 +27,23 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
 
 unsigned char C = 0x07;        
 #define A (PINA & 0x03)  
+int count = 0;
 
-enum States { Start, Wait, Add, Sub, Reset} State;
+enum States { Start, Wait, Add, Sub, Reset, Release} State;
 
 void tickButton() {
     switch(State) {
-	//C = 0x07;
         case Start:
 	    C = 0x07;        
 	    State = Wait; 	
 	    break;
 	case Wait: 
 	    if (A == 0x01) {
+		count = count + 1;
 		State = Add; 
 	    }
 	    else if (A == 0x02) {
+		count = count + 2;
 		State = Sub;
 	    }
 	    else if (A == 0x03) {
@@ -52,13 +54,39 @@ void tickButton() {
 	    }
 	    break;
 	case Add:   
-		State = Wait;
+	    State = Release;
 	    break;
 	case Sub:
-		State = Wait;
+	    State = Release;
             break;
 	case Reset:
-	    State = Wait;
+	    State = Release;
+	    break;
+	case Release:
+	    if (A == 0x01) {
+		count = count + 1;
+		if (count == 3) {
+		    State = Reset;
+		}
+		else {
+                    State = Release;
+		}
+            }
+            else if (A == 0x02) {
+		count = count + 2;
+                if (count == 3) {
+                    State = Reset;
+                }
+		else {
+		    State = Release;
+		}
+            }
+	    else if (A == 0x03) {
+		State = Release;
+	    }
+	    else if (A == 0x00) {
+                State = Wait;  
+	    }
 	    break;
         default:
 	    State = Start;
@@ -101,12 +129,9 @@ int main(void) {
 	PORTC = 0x00;
 	State = Start;  
 	
-	//C = 0x07;
-	
 	while (1) {
 	tickButton();	
 	PORTC = C;
-	//C = 0x07;
 	}
     
     return 1;

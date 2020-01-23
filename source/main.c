@@ -26,71 +26,51 @@ unsigned char GetBit(unsigned char x, unsigned char k) {
 }
 
 unsigned char C = 0x07;        
-#define A (PINA & 0x03)  
-int count = 0;
+#define A0 (PINA & 0x01)  
+#define A1 (PINA & 0x02)  
 
 enum States { Start, Wait, Add, Sub, Reset, Release} State;
 
 void tickButton() {
     switch(State) {
         case Start:
-	    C = 0x07;        
+	    C = 0x07;       
 	    State = Wait; 	
 	    break;
 	case Wait: 
-	    if (A == 0x01) {
-		count = count + 1;
-		State = Add; 
-	    }
-	    else if (A == 0x02) {
-		count = count + 2;
-		State = Sub;
-	    }
-	    else if (A == 0x03) {
-		State = Reset;
-	    }
-	    else {
-		State = Wait;
-	    }
+		if (A0 && !A1) {
+			State = Add;
+		}
+		else if (!A0 && A1) {
+			State = Sub;
+		}
+		else if (A0 && A1) {
+			State = Reset;
+		}
+		else {
+			State = Wait;
+		}
 	    break;
 	case Add:   
-	    State = Release;
+		State = Release;
 	    break;
 	case Sub:
-	    State = Release;
-            break;
+		State = Release;
+        break;
 	case Reset:
-	    State = Release;
+		State = Release;
 	    break;
 	case Release:
-	    if (A == 0x01) {
-		count = count + 1;
-		if (count == 3) {
-		    State = Reset;
+		if (!A0 & !A1) {
+			State = Wait;
 		}
-		else {
-                    State = Release;
+		else { 
+			State = Release;
 		}
-            }
-            else if (A == 0x02) {
-		count = count + 2;
-                if (count == 3) {
-                    State = Reset;
-                }
-		else {
-		    State = Release;
-		}
-            }
-	    else if (A == 0x03) {
-		State = Release;
-	    }
-	    else if (A == 0x00) {
-                State = Wait;  
-	    }
 	    break;
-        default:
-	    State = Start;
-	    break;
+    default:
+		State = Start;
+		break;
     }
     
     switch(State) {
@@ -117,6 +97,8 @@ void tickButton() {
 	case Reset:
 	    C = 0x00;
             break;
+    case Release:
+		break;
 	default:
 	    break;	    
     }    
