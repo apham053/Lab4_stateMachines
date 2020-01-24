@@ -82,6 +82,8 @@ setPINA 0x01
 continue 2
 setPINA 0x02
 continue 2
+setPINA 0x03
+continue 2
 expectPORTC 0x00
 expect State Release
 checkResult
@@ -91,6 +93,8 @@ set State = Start
 setPINA 0x02
 continue 2
 setPINA 0x01
+continue 2
+setPINA 0x03
 continue 2
 expectPORTC 0x00
 expect State Release
@@ -147,6 +151,8 @@ continue 2
 setPINA 0x01
 continue 2
 setPINA 0x02
+continue 2
+setPINA 0x03
 continue 2
 expectPORTC 0x00
 expect State Release
