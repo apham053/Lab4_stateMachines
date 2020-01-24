@@ -56,13 +56,16 @@ void tickButton() {
 	    break;
 	case Sub:
 		State = Release;
-        break;
+            break;
 	case Reset:
 		State = Release;
 	    break;
 	case Release:
-		if (!A0 & !A1) {
+		if (!A0 && !A1) {
 			State = Wait;
+		}
+		else if (A0 && A1) {
+			State = Reset;
 		}
 		else { 
 			State = Release;

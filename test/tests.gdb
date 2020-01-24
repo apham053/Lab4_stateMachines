@@ -26,14 +26,14 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "PINA: 0x03, 0x03 => PORTC: 0x00, State: Release"
+test "PINA: 0x03, 0x03 => PORTC: 0x00, State: Reset"
 set State = Start
 setPINA 0x03
 continue 2
 setPINA 0x03
 continue 2
 expectPORTC 0x00
-expect State Release
+expect State Reset
 checkResult
 
 test "PINA: 0x01, 0x01 => PORTC: 0x08, State: Release"
